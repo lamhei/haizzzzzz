@@ -1,403 +1,399 @@
-/* ===== RESET ===== */
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, sans-serif;
+/* =========================================
+   FILE: style.css
+   MÔ TẢ: CSS CHUNG CHO TOÀN BỘ WEBSITE
+   ========================================= */
+
+/* ===== RESET & CẤU HÌNH CƠ BẢN ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
 }
 
-/* ===== FIXED HEADER ===== */
-body{
-    margin:0;
-    padding-top:140px;
+/* Đẩy nội dung xuống để không bị Header (Fixed) che mất */
+body {
+    background: #f4f7fb;
+    /* Top Bar (40px) + Nav (60px) + khoảng hở 10px */
+    padding-top: 110px; 
 }
 
-/* ===== MATERIAL ICON ===== */
+a { text-decoration: none; }
+ul { list-style: none; }
+
+/* ===== MATERIAL ICON (NẾU DÙNG) ===== */
 .material-symbols-outlined {
-    font-variation-settings:
-        "FILL" 0,
-        "wght" 400,
-        "GRAD" 0,
-        "opsz" 48;
-    user-select:none;
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 48;
+    user-select: none;
 }
 
-/* ===== TOP BAR ===== */
-.top-bar{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    background:#0f75bd;
-    color:#fff;
-    padding:12px 0;
-    text-align:center;
-    font-size:22px;
-    font-weight:bold;
-    z-index:1001;
-}
-.top-bar a{
-    color:#ff4000;
-    margin-left:20px;
-    text-decoration:none;
-    font-weight:bold;
+/* ===== 1. TOP BAR (MÀU ĐỎ - CỐ ĐỊNH) ===== */
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: linear-gradient(to right, #e60000, #ff4d4d); /* Gradient Đỏ */
+    color: #fff;
+    display: flex;
+    justify-content: center; /* Căn giữa nội dung */
+    align-items: center;
+    gap: 30px; /* Khoảng cách giữa Hotline và Nút */
+    font-size: 14px;
+    font-weight: bold;
+    z-index: 2000; /* Lớp cao nhất */
 }
 
-/* ===== NAV MENU ===== */
-nav{
-    position:fixed;
-    top:56px;
-    left:0;
-    width:100%;
-    background:#ffffff;
-    box-shadow:0 2px 10px rgba(0,0,0,0.15);
-    z-index:1000;
+.top-bar span {
+    display: flex; 
+    align-items: center; 
+    gap: 5px;
 }
 
-nav ul{
-    list-style:none;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:40px;
-    padding:15px 0;
-    font-size:18px;
+.top-bar a {
+    background: white;
+    color: #e60000;
+    padding: 4px 15px;
+    border-radius: 15px;
+    font-size: 12px;
+    transition: 0.3s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+.top-bar a:hover { 
+    background: #ffe6e6; 
+    transform: translateY(-1px);
 }
 
-nav ul li{
-    position:relative;
-}
-
-nav ul li a{
-    text-decoration:none;
-    color:#333;
-    font-weight:bold;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    gap:6px;
-    user-select:none;
-}
-
-nav ul li a:hover{
-    color:#0f75bd;
-}
-
-/* ===== ARROW ===== */
-.arrow{
-    transition:0.25s;
-}
-
-/* ===== DROPDOWN HOVER ===== */
-.submenu,
-.nested{
-    display:none;
-    position:absolute;
-    background:#fff;
-    border-radius:10px;
-    box-shadow:0 6px 20px rgba(0,0,0,0.18);
-    padding:10px 0;
-    min-width:220px;
-    z-index:2000;
-}
-
-/* hover hiện menu */
-nav ul li:hover > .submenu,
-nav ul li:hover > .nested{
-    display:block;
-}
-
-/* cấp 1 */
-.submenu{
-    top:45px;
-    left:0;
-}
-
-/* item */
-.submenu li a,
-.nested li a{
-    display:block;
-    padding:10px 20px;
-    font-weight:normal;
-    color:#333;
-}
-
-.submenu li a:hover,
-.nested li a:hover{
-    background:#f0f4ff;
-    color:#0f75bd;
-}
-
-/* xoay mũi tên */
-nav ul li:hover .arrow{
-    transform:rotate(90deg);
-}
-
-/* ===== BANNER ===== */
-.banner{
-    width:100%;
-    height:550px;
-    background:url('https://duhocxkldthanhdo.vn/Upload/Images/du-hoc-han-quoc-0111.jpg') center/cover;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#fff;
-    font-size:40px;
-    font-weight:bold;
-    text-shadow:2px 2px 5px #000;
-}
-
-/* ===== TWO COLUMN ===== */
-.two-column-section{
-    display:flex;
-    gap:40px;
-    padding:40px 8%;
-}
-
-/* ===== SLIDER ===== */
-.left-slider{ width:50%; }
-
-.slider-container{
-    position:relative;
-    height:300px;
-    overflow:hidden;
-    border-radius:12px;
-}
-
-.slider{
-    display:flex;
-    height:100%;
-    transition:transform 0.4s ease;
-}
-
-.slider img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}
-
-/* slider buttons */
-.slider-btn{
-    position:absolute;
-    top:50%;
-    transform:translateY(-50%);
-    font-size:40px;
-    background:rgba(0,0,0,0.3);
-    color:#fff;
-    padding:6px;
-    border-radius:50%;
-    cursor:pointer;
-}
-.slider-btn.prev{ left:10px; }
-.slider-btn.next{ right:10px; }
-
-/* ===== RIGHT TEXT ===== */
-.right-text{ width:50%; }
-.right-text h2{ color:#0f75bd; }
-.right-text p{ margin-bottom:20px; }
-
-/* ===== FORM ===== */
-.form-container{
-    max-width:600px;
-    margin:50px auto;
-    padding:30px;
-    background:#fff;
-    border-radius:10px;
-    box-shadow:0 0 10px rgba(0,0,0,0.2);
-}
-
-form label{ margin-top:15px; display:block; }
-form input, form select{
-    width:100%;
-    padding:10px;
-    margin-top:5px;
-    border:1px solid #ccc;
-    border-radius:5px;
-}
-
-form button{
-    width:100%;
-    padding:12px;
-    margin-top:20px;
-    background:#0f75bd;
-    color:#fff;
-    border:none;
-    border-radius:5px;
-    font-size:18px;
-    cursor:pointer;
-}
-form button:hover{ background:#095a90; }
-
-/* ===== RESPONSIVE ===== */
-@media(max-width:768px){
-    .two-column-section{
-        flex-direction:column;
-    }
-    .left-slider,
-    .right-text{
-        width:100%;
-    }
-}
-/* ===== FIX CLICK ĐƯỢC SUBMENU ===== */
-
-/* giữ hover khi rê chuột */
-nav ul li{
-    padding-bottom: 10px;
-}
-
-/* mở rộng vùng hover */
-.submenu{
-    margin-top: 10px;
-}
-
-/* đảm bảo submenu nằm trên tất cả */
-.submenu,
-.nested{
-    z-index: 3000;
-}
-
-/* tránh mất hover khi rê chuột */
-nav ul li:hover > .submenu{
-    display: block;
-}
-
-/* FIX iframe map không đè menu */
-iframe{
-    pointer-events: none;
-}
-/* ===== FIX MENU HOVER + CLICK ĐƯỢC ===== */
-
-/* QUAN TRỌNG: nav KHÔNG ĐƯỢC overflow:hidden */
+/* ===== 2. NAV MENU (MÀU XANH - CỐ ĐỊNH) ===== */
 nav {
-    overflow: visible !important;
+    position: fixed;
+    top: 40px; /* Nằm ngay dưới Top Bar */
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: #0f75bd; /* Xanh ICOGroup */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    z-index: 1999;
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10%; /* Căn lề 2 bên 10% */
 }
 
-/* menu ngang */
+/* --- LOGO --- */
+.nav-logo {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 5px 15px;
+    border-radius: 5px;
+    height: 44px;
+}
+
+.nav-logo img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+}
+
+/* --- MENU LIST --- */
 nav ul {
     display: flex;
     align-items: center;
-}
-
-/* item cha */
-nav ul li {
-    position: relative;
-}
-
-/* submenu */
-nav ul li .submenu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: #fff;
-    min-width: 220px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    z-index: 9999;
-}
-
-/* hover cha → hiện con */
-nav ul li:hover > .submenu {
-    display: block;
-}
-
-/* link con */
-.submenu li a {
-    display: block;
-    padding: 10px 15px;
-    color: #333;
-    white-space: nowrap;
-}
-
-/* hover link con */
-.submenu li a:hover {
-    background: #f0f4ff;
-    color: #0f75bd;
-}
-/* ===== MENU DROPDOWN CHUẨN – CLICK ĐƯỢC ===== */
-
-nav {
-    overflow: visible;
-    z-index: 9999;
+    gap: 20px;
 }
 
 nav ul li {
     position: relative;
-}
-
-/* submenu */
-nav ul li > .submenu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    min-width: 220px;
-    background: #fff;
-    box-shadow: 0 6px 20px rgba(0,0,0,.25);
-    border-radius: 10px;
     padding: 10px 0;
-    z-index: 10000;
 }
 
-/* hover cha → hiện con */
-nav ul li:hover > .submenu {
+nav ul li > a {
+    color: white;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 15px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+nav ul li > a:hover {
+    background: rgba(255,255,255,0.15);
+}
+
+/* Mũi tên menu con */
+.arrow {
+    font-size: 10px;
+    transition: transform 0.3s ease;
+}
+nav ul li:hover .arrow {
+    transform: rotate(180deg);
+}
+
+/* ===== 3. DROPDOWN (SUBMENU) ===== */
+.submenu {
+    display: none; /* Ẩn mặc định */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #fff;
+    min-width: 220px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    border-radius: 0 0 8px 8px;
+    padding: 10px 0;
+    z-index: 2001;
+    border-top: 3px solid #ff6600; /* Viền cam điểm nhấn */
+}
+
+/* Hiện submenu khi hover vào thẻ li cha */
+nav ul li:hover > .submenu,
+.submenu.show { /* Class .show dùng cho JS trên mobile/click */
     display: block;
+    animation: fadeIn 0.3s ease;
 }
 
-/* link con */
+.submenu li { padding: 0; border-bottom: 1px solid #f0f0f0; }
+.submenu li:last-child { border-bottom: none; }
+
 .submenu li a {
+    padding: 12px 20px;
+    font-weight: normal;
+    color: #333;
     display: block;
-    padding: 10px 20px;
-    white-space: nowrap;
+    font-size: 14px;
 }
 
-/* hover item */
 .submenu li a:hover {
     background: #f0f4ff;
     color: #0f75bd;
+    padding-left: 25px; /* Hiệu ứng đẩy chữ sang phải */
 }
 
-/* arrow */
-.arrow {
-    transition: .25s;
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-nav ul li:hover .arrow {
-    transform: rotate(90deg);
-}
-.page-banner {
+/* ===== 4. HERO BANNER & TEXT STRIP ===== */
+.hero-banner {
     width: 100%;
-    height: 320px;
-    background: url("https://www.icogroup.vn/vnt_upload/about/bbimg1.jpg")
-        center center / cover no-repeat;
-    position: relative;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+.hero-banner img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
 }
 
-.banner-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.45);
+.banner {
+    background: #003366;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    font-weight: bold;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.banner-content {
+/* ===== 5. SECTION: SLIDER & TEXT (2 CỘT) ===== */
+.two-column-section {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    margin: 40px 0;
+    padding: 0 5%; /* Cách lề 2 bên 5% */
+    gap: 0; /* Liền mạch */
+    align-items: stretch;
+}
+
+/* Cột Trái: Slider */
+.left-slider {
+    flex: 6; /* 60% */
     position: relative;
+    overflow: hidden;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.slider-container {
+    position: relative;
+    width: 100%;
     height: 100%;
+    min-height: 450px;
+    overflow: hidden;
+}
+
+.slider {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    height: 100%;
+}
+
+.slider img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+/* Nút bấm Slider */
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.6);
+    color: white;
+    border-radius: 50%;
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: 0.3s;
+}
+.prev { left: 15px; }
+.next { right: 15px; }
+.slider-btn:hover { background: #ff6600; }
+
+/* Cột Phải: Text */
+.right-text {
+    flex: 4; /* 40% */
+    background: white;
+    padding: 40px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    color: #fff;
+}
+
+.right-text h2 {
+    color: #0f75bd;
+    margin-bottom: 20px;
+    font-size: 24px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+.right-text p {
+    margin-bottom: 20px;
+    color: #555;
+    font-size: 16px;
+    line-height: 1.6;
+    text-align: justify;
+}
+
+/* ===== 6. FORM ĐĂNG KÝ ===== */
+.form-container {
+    max-width: 600px;
+    margin: 60px auto;
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border-top: 5px solid #ff6600;
+}
+
+.form-container h3 {
     text-align: center;
+    color: #ff6600;
+    margin-bottom: 30px;
+    font-size: 24px;
+    text-transform: uppercase;
 }
 
-.banner-content h1 {
-    font-size: 38px;
-    margin-bottom: 10px;
+.form-group { margin-bottom: 15px; }
+label { display: block; font-weight: 600; margin-bottom: 8px; color: #333; }
+
+input[type="text"], 
+input[type="tel"], 
+input[type="email"], 
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: 0.3s;
 }
 
-.banner-content p {
+input:focus, select:focus {
+    border-color: #0f75bd;
+    outline: none;
+    box-shadow: 0 0 5px rgba(15, 117, 189, 0.2);
+}
+
+button[type="submit"] {
+    width: 100%;
+    margin-top: 20px;
+    padding: 14px;
+    background: #ff6600;
+    color: white;
+    border: none;
+    border-radius: 5px;
     font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    text-transform: uppercase;
+}
+button[type="submit"]:hover { background: #cc5200; box-shadow: 0 5px 15px rgba(255, 102, 0, 0.3); }
+
+#message { text-align: center; margin-top: 20px; font-weight: bold; color: green; }
+
+/* ===== 7. FOOTER & BẢN ĐỒ ===== */
+.footer-section {
+    background: #002b6f;
+    color: white;
+    padding: 50px 20px;
+    margin-top: 50px;
 }
 
+/* ===== RESPONSIVE MOBILE ===== */
+@media (max-width: 768px) {
+    .top-bar { display: none; } /* Ẩn topbar trên mobile */
+    
+    body { padding-top: 70px; } /* Giảm khoảng cách body */
+
+    nav {
+        top: 0;
+        height: 60px;
+        padding: 0 15px;
+    }
+
+    /* Ẩn menu chính, hiện nút hamburger (cần thêm JS để xử lý nếu muốn) */
+    nav ul { display: none; } 
+    .nav-logo { height: 40px; padding: 5px; }
+
+    /* Layout cột dọc trên mobile */
+    .two-column-section {
+        flex-direction: column;
+        padding: 0 15px;
+        gap: 20px;
+    }
+
+    .left-slider, .right-text {
+        width: 100%;
+        border-radius: 10px;
+        flex: none;
+    }
+
+    .slider-container {
+        height: 250px;
+        min-height: auto;
+    }
+
+    .form-container {
+        margin: 30px 15px;
+        padding: 20px;
+    }
+}

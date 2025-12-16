@@ -1,3 +1,4 @@
+
 <?php
 // 1. Cấu hình Headers (quan trọng cho API)
 header('Content-Type: application/json');

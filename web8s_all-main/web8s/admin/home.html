@@ -45,7 +45,7 @@
             <div id="user-list" class="content-view active-view">
                 <h2>📋 Danh sách Người dùng đã gửi thông tin</h2>
                 <div class="table-controls" style="margin-bottom: 20px; display: flex; gap: 10px; align-items: center;">
-                    <input type="text" id="searchInput" placeholder="Tìm kiếm theo Tên, SĐT, Ghi chú..."
+                    <input type="text" id="searchInput" placeholder="Tìm kiếm theo Ngày nhận, Tên, SĐT, Ghi chú..."
                         style="padding: 8px; border: 1px solid #ccc; flex-grow: 1;">
                     <button class="action-btn btn-update" onclick="exportUsersToTxt()">
                         📥 Xuất File TXT
@@ -95,6 +95,15 @@
                             <label for="edit-ghi_chu">Ghi Chú:</label>
                             <input type="text" id="edit-ghi_chu" name="ghi_chu">
 
+                            <label for="edit-trang_thai">Trạng Thái Hồ Sơ:</label>
+                            <select id="edit-trang_thai" name="trang_thai">
+                                <option value="Mới">Mới</option>
+                                <option value="Đang xử lý">Đang xử lý</option>
+                                <option value="Đã phỏng vấn">Đã phỏng vấn</option>
+                                <option value="Đỗ">Đỗ</option>
+                                <option value="Trượt">Trượt</option>
+                            </select>
+
                             <button type="submit" class="btn-update action-btn"
                                 style="width: 100%; margin-top: 15px;">LƯU THAY ĐỔI</button>
                         </form>
@@ -102,7 +111,8 @@
                 </div>
 
                 <script>
-                    const API_BASE_URL = 'http://localhost/web8s/backend_api/';
+                    const API_BASE_URL = '/web8s/backend_api/';
+                    let allUsers = [];
                     const tableContainer = document.getElementById('userTableContainer');
                     const messageDisplay = document.getElementById('message');
                     const editModal = document.getElementById('editModal');
@@ -153,31 +163,42 @@
                         }
 
                         let tableHTML = '<table>';
-                        tableHTML += '<thead><tr><th>ID</th><th>Ngày nhận</th><th>Họ Tên</th><th>SĐT</th><th>Năm Sinh</th><th>Địa Chỉ</th><th>Chương Trình</th><th>Quốc Gia</th><th>Ghi Chú</th><th>Hành Động</th></tr></thead>';
+                        tableHTML += '<thead><tr><th>ID</th><th>Ngày nhận</th><th>Họ Tên</th><th>SĐT</th><th>Năm Sinh</th><th>Địa Chỉ</th><th>Chương Trình</th><th>Quốc Gia</th><th>Ghi Chú</th><th>Trạng thái</th><th>Hành Động</th></tr></thead>';
                         tableHTML += '<tbody>';
 
                         dataToDisplay.forEach(user => {
-                            // Định dạng lại ngày giờ
+                            
                             const formattedDate = user.ngay_nhan ? new Date(user.ngay_nhan).toLocaleString('vi-VN') : '-';
-                            tableHTML += `
-                    <tr data-id="${user.id}">
-                        <td>${user.id}</td>
-                        <td>${formattedDate}</td>
-                        <td>${user.ho_ten}</td>
-                        <td>${user.sdt}</td>
-                        <td>${user.nam_sinh || '-'}</td>
 
-                        <td>${user.dia_chi || '-'}</td>
-                        <td>${user.chuong_trinh || '-'}</td>
-                        <td>${user.quoc_gia || '-'}</td>
-                        
-                        <td>${user.ghi_chu || '-'}</td>
-                        <td>
-                            <button class="action-btn btn-update" onclick="openEditModal(${user.id}, '${user.ho_ten}', '${user.sdt}', '${user.nam_sinh}', '${user.dia_chi}', '${user.chuong_trinh}', '${user.quoc_gia}', '${user.ghi_chu}')">Sửa</button>
-                            <button class="action-btn btn-delete" onclick="deleteUser(${user.id})">Xóa</button>
-                        </td>
-                    </tr>
-                    `;
+                            tableHTML += `
+            <tr data-id="${user.id}">
+                <td>${user.id}</td>
+                <td>${formattedDate}</td>
+                <td>${user.ho_ten}</td>
+                <td>${user.sdt}</td>
+                <td>${user.nam_sinh || '-'}</td>
+                <td>${user.dia_chi || '-'}</td>
+                <td>${user.chuong_trinh || '-'}</td>
+                <td>${user.quoc_gia || '-'}</td>
+                <td>${user.ghi_chu || '-'}</td>
+                <td>${user.trang_thai || 'mới'}</td>
+
+                <td>
+                    <button class="action-btn btn-update" onclick="openEditModal(
+                            ${user.id},
+                            '${user.ho_ten}',
+                            '${user.sdt}',
+                            '${user.nam_sinh}',
+                            '${user.dia_chi}',
+                            '${user.chuong_trinh}',
+                            '${user.quoc_gia}',
+                            '${user.ghi_chu}',
+                            '${user.trang_thai}' 
+                        )">Sửa</button>
+                    <button class="action-btn btn-delete" onclick="deleteUser(${user.id})">Xóa</button>
+                </td>
+            </tr>
+            `; 
                         });
 
                         tableHTML += '</tbody></table>';
@@ -190,7 +211,7 @@
                         // Lọc mảng allUsers (dữ liệu gốc)
                         const filteredUsers = allUsers.filter(user => {
                             // Chuỗi để tìm kiếm (tìm kiếm trong Tên, SĐT, Ghi chú)
-                            const searchString = `${user.ho_ten} ${user.sdt} ${user.ghi_chu}`.toLowerCase();
+                            const searchString = `${user.ho_ten} ${user.sdt} ${user.ghi_chu} ${user.ngay_nhan} ${user.trang_thai}`.toLowerCase();
                             return searchString.includes(searchTerm);
                         });
 
@@ -213,7 +234,7 @@
                     // ----------------------------------------------------------------------
 
                     async function deleteUser(id) {
-                        if (!confirm(`Bạn có chắc chắn muốn xóa người dùng ID: ${id} không?`)) {
+                        if (!confirm(`Bạn có chắc chắn muốn xóa người dùng ID: ${id} không ? `)) {
                             return;
                         }
 
@@ -236,7 +257,7 @@
 
                         } catch (error) {
                             console.error('Lỗi Delete:', error);
-                            showMessage(`❌ Lỗi xóa: ${error.message}`, false);
+                            showMessage(`❌ Lỗi xóa: ${error.message} `, false);
                         }
                     }
 
@@ -245,7 +266,7 @@
                     // ----------------------------------------------------------------------
 
                     // Mở Modal và điền dữ liệu cũ vào form
-                    function openEditModal(id, ho_ten, sdt, nam_sinh, dia_chi, chuong_trinh, quoc_gia, ghi_chu) {
+                    function openEditModal(id, ho_ten, sdt, nam_sinh, dia_chi, chuong_trinh, quoc_gia, ghi_chu, trang_thai) {
                         document.getElementById('edit-id').value = id;
                         document.getElementById('edit-ho_ten').value = ho_ten;
                         document.getElementById('edit-sdt').value = sdt;
@@ -254,6 +275,7 @@
                         document.getElementById('edit-chuong_trinh').value = chuong_trinh;
                         document.getElementById('edit-quoc_gia').value = quoc_gia;
                         document.getElementById('edit-ghi_chu').value = ghi_chu;
+                        document.getElementById('edit-trang_thai').value = trang_thai;
 
                         editModal.style.display = "block";
                     }
@@ -273,7 +295,7 @@
                     // Xử lý sự kiện khi nhấn nút "LƯU THAY ĐỔI" trong Modal
                     editForm.addEventListener('submit', async function (event) {
                         event.preventDefault();
-
+                        
                         const updatedData = {
                             id: document.getElementById('edit-id').value,
                             ho_ten: document.getElementById('edit-ho_ten').value,
@@ -282,7 +304,8 @@
                             dia_chi: document.getElementById('edit-dia_chi').value,
                             chuong_trinh: document.getElementById('edit-chuong_trinh').value,
                             quoc_gia: document.getElementById('edit-quoc_gia').value,
-                            ghi_chu: document.getElementById('edit-ghi_chu').value
+                            ghi_chu: document.getElementById('edit-ghi_chu').value,
+                            trang_thai: document.getElementById('edit-trang_thai').value
                         };
 
                         showMessage("Đang lưu thay đổi...", false);
@@ -306,38 +329,47 @@
 
                         } catch (error) {
                             console.error('Lỗi Update:', error);
-                            showMessage(`❌ Lỗi cập nhật: ${error.message}`, false);
+                            showMessage(`❌ Lỗi cập nhật: ${error.message} `, false);
                         }
                     });
                     // ----------------------------------------------------------------------
                     // 4. CHỨC NĂNG XUẤT FILE TXT
                     // ----------------------------------------------------------------------
                     async function exportUsersToTxt() {
-                        showMessage("Đang chuẩn bị file TXT...", false);
 
                         try {
-                            // GỌI API export_to_txt.php
-                            const response = await fetch(API_BASE_URL + 'export_to_txt.php');
+                            const response = await fetch(API_BASE_URL + 'export.php');
+
+                            // KIỂM TRA MÃ TRẠNG THÁI VÀ NỘI DUNG PHẢN HỒI (RẤT QUAN TRỌNG)
+                            if (!response.ok) {
+                                // Nếu mã trạng thái là lỗi (4xx, 5xx), cố gắng đọc phản hồi là text để xem lỗi PHP
+                                const errorText = await response.text();
+                                console.error('Lỗi phản hồi API:', errorText);
+                                // Hiển thị thông báo lỗi chung chung hơn cho người dùng
+                                throw new Error(`Kết nối thành công nhưng API trả về lỗi(${response.status}).Vui lòng kiểm tra Console(Lỗi PHP).`);
+                            }
+
+                            // Cố gắng phân tích phản hồi thành JSON
                             const result = await response.json();
 
-                            if (response.ok && result.status === true && result.file_url) {
-                                showMessage(`Xuất file thành công! Bắt đầu tải xuống...`, true);
-                                // Tạo link tải xuống tạm thời và kích hoạt click
+                            if (result.status === true && result.file_url) {
+
                                 const fullUrl = API_BASE_URL.replace('/backend_api/', '/') + result.file_url;
                                 const link = document.createElement('a');
                                 link.href = fullUrl;
-                                link.download = result.file_url.split('/').pop(); // Lấy tên file
+                                link.download = result.file_url.split('/').pop();
                                 document.body.appendChild(link);
                                 link.click();
                                 document.body.removeChild(link);
                             } else if (result.message) {
-                                showMessage(`Thông báo: ${result.message}`, true);
+
+                                showMessage(`Thông báo: ${result.message} `, true);
                             } else {
                                 throw new Error("Lỗi không xác định khi xuất file.");
                             }
                         } catch (error) {
                             console.error('Lỗi Export:', error);
-                            showMessage(`❌ Lỗi xuất file: ${error.message}`, false);
+                            showMessage(`❌ Lỗi xuất file: ${error.message.includes('JSON') ? 'Lỗi API: Không nhận được phản hồi JSON hợp lệ (Kiểm tra lỗi PHP trên máy chủ).' : error.message} `, false);
                         }
                     }
                     // Tự động tải dữ liệu khi trang được load
@@ -362,25 +394,24 @@
 
                     // 4.1. Tải nội dung hiện tại và điền vào form
                     async function fetchAllContent() {
-                        //showContentMessage("Đang tải nội dung web...", false);
                         try {
                             const response = await fetch(API_BASE_URL + 'get_content.php');
                             const contents = await response.json();
 
                             if (response.ok && Array.isArray(contents)) {
                                 contents.forEach(item => {
+                                    // SỬA LỖI CÚ PHÁP: Bỏ dấu cách thừa
                                     const inputElement = document.querySelector(`[data-key="${item.section_key}"]`);
                                     if (inputElement) {
                                         inputElement.value = item.content_value;
                                     }
                                 });
-                               // showContentMessage("Tải nội dung web hiện tại thành công.", true);
                             } else {
                                 throw new Error(contents.message || "Lỗi khi tải nội dung web.");
                             }
                         } catch (error) {
                             console.error('Lỗi Fetch Content:', error);
-                            showContentMessage(`❌ Lỗi tải nội dung: ${error.message}`, false);
+                            showMessage(`❌ Lỗi tải nội dung: ${error.message} `, false);
                         }
                     }
 
@@ -399,8 +430,7 @@
                             }
                             return true;
                         } catch (error) {
-                            console.error(`Lỗi lưu nội dung ${key}:`, error);
-                            // showContentMessage(`❌ Lỗi khi lưu nội dung ${key}: ${error.message}`, false); // Không hiển thị từng lỗi nhỏ
+                            console.error(`Lỗi lưu nội dung ${key}: `, error);
                             return false;
                         }
                     }
@@ -425,9 +455,9 @@
                         }
 
                         if (failCount === 0) {
-                            showContentMessage(`🎉 Lưu tất cả nội dung thành công! (${successCount} mục được cập nhật).`, true);
+                            showContentMessage(`🎉 Lưu tất cả nội dung thành công!(${successCount} mục được cập nhật).`, true);
                         } else {
-                            showContentMessage(`⚠️ Hoàn thành! ${successCount} mục thành công, ${failCount} mục thất bại. Vui lòng kiểm tra Console.`, false);
+                            showContentMessage(`⚠️ Hoàn thành! ${successCount} mục thành công, ${failCount} mục thất bại.Vui lòng kiểm tra Console.`, false);
                         }
                     }
 
@@ -464,7 +494,21 @@
 
             <div id="other-data" class="content-view">
                 <h2>📚 Quản lý Dữ liệu Khác</h2>
-                <p>Nội dung quản lý các loại dữ liệu khác ngoài người dùng.</p>
+
+                <div class="table-controls" style="margin-bottom: 20px; display: flex; gap: 10px; align-items: center;">
+                    <input type="text" id="searchInputOther" placeholder="Tìm kiếm ID, Ngày nhận, Tên, SĐT, Ghi chú..."
+                        style="padding: 8px; border: 1px solid #ccc; flex-grow: 1;">
+                    <button class="action-btn btn-update" onclick="exportUsersToTxt()">
+                        📥 Xuất File TXT
+                    </button>
+                </div>
+                <div id="otherDataTableContainer">
+                    <p style="text-align:center;">Đang tải dữ liệu khác...</p>
+                </div>
+
+                <div class="table-footer">
+                    <p>Hiển thị 1 đến 10 trên tổng số X bản ghi</p>
+                </div>
             </div>
             <div id="text-edit" class="content-view">
                 <h2>📝 Sửa Văn Bản/Tiêu đề Trang Chủ</h2>

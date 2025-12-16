@@ -2,160 +2,295 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Liên hệ – ICO</title>
+    <title>Liên hệ – ICO Group</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- CSS chung -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css"> 
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+
     <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        .contact-header { text-align: center; margin-bottom: 30px; }
-        .contact-info { max-width: 700px; margin: auto; }
-        .contact-info p { margin: 10px 0; font-size: 17px; }
-        .social-icons img { width: 40px; margin-right: 10px; vertical-align: middle; }
-        .back-home { margin-top: 30px; display: block; text-align: center; font-weight: bold; }
+        /* CSS Riêng cho trang Liên hệ */
+        * { box-sizing: border-box; font-family: "Segoe UI", Arial, sans-serif; margin: 0; padding: 0; }
+        body { background: #f4f7fb; line-height: 1.6; padding-top: 110px; }
+
+        /* Copy lại style Topbar và Nav từ trang chủ để đồng bộ */
+        .top-bar {
+            background: linear-gradient(to right, #e60000, #ff4d4d);
+            color: white; padding: 0 50px; height: 40px; 
+            display: flex; justify-content: center; gap: 30px; align-items: center; font-size: 14px;
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 2000;
+        }
+        .top-bar a { background: white; color: #e60000; padding: 4px 15px; text-decoration: none; border-radius: 15px; font-weight: bold; font-size: 12px; }
+
+        nav {
+            background: #0f75bd; height: 60px; display: flex; align-items: center; justify-content: space-between; 
+            padding: 0 10%; position: fixed; top: 40px; left: 0; width: 100%; z-index: 1999;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .nav-logo { height: 44px; background: white; padding: 5px 15px; border-radius: 5px; display: flex; align-items: center; }
+        .nav-logo img { height: 100%; width: auto; }
+        nav ul { list-style: none; display: flex; gap: 20px; }
+        nav ul li { position: relative; }
+        nav ul li a { color: white; padding: 0 15px; line-height: 60px; display: block; text-decoration: none; font-weight: 500; cursor: pointer; }
+        
+        /* Submenu */
+        .submenu { display: none; position: absolute; background: white; top: 60px; left: 0; min-width: 200px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); border-radius: 0 0 5px 5px; }
+        .submenu a { color: #333 !important; line-height: 1.5; padding: 10px 20px; border-bottom: 1px solid #eee; }
+        .submenu a:hover { background: #f4f7fb; color: #0f75bd !important; }
+        .arrow { font-size: 10px; margin-left: 5px; }
+
+        /* Layout Liên hệ */
+        .page-banner {
+            position: relative; background-size: cover; background-position: center;
+        }
+        .banner-overlay {
+            background: rgba(0, 43, 111, 0.7); height: 100%; width: 100%; display: flex; align-items: center; justify-content: center; text-align: center; color: white;
+        }
+        .banner-content h1 { font-size: 36px; margin-bottom: 10px; }
+
+        .contact-wrapper {
+            max-width: 1200px; margin: 40px auto; display: flex; gap: 40px; padding: 0 20px;
+        }
+
+        .contact-left, .contact-right {
+            flex: 1; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .contact-info-item { margin-bottom: 20px; font-size: 16px; display: flex; align-items: center; gap: 15px; }
+        .contact-icon { font-size: 24px; color: #0f75bd; background: #eef6fb; padding: 10px; border-radius: 50%; }
+
+        .social-links { margin-top: 20px; display: flex; gap: 15px; }
+        .social-links a img { width: 40px; transition: 0.3s; }
+        .social-links a img:hover { transform: scale(1.1); }
+
+        /* Form liên hệ */
+        .contact-form input, .contact-form textarea {
+            width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; font-family: inherit; font-size: 15px;
+        }
+        .contact-form input:focus, .contact-form textarea:focus { border-color: #0f75bd; outline: none; }
+        
+        .contact-form button {
+            background: #ff6600; color: white; border: none; padding: 12px 30px; font-weight: bold;
+            border-radius: 5px; cursor: pointer; transition: 0.3s; width: 100%; font-size: 16px;
+        }
+        .contact-form button:hover { background: #e65c00; }
+
+        #formMessage { text-align: center; margin-top: 15px; font-weight: bold; font-size: 14px; }
+
+        @media (max-width: 768px) {
+            .contact-wrapper { flex-direction: column; }
+            .top-bar { flex-direction: column; height: auto; padding: 5px; }
+            nav { top: 60px; padding: 0 10px; }
+            nav ul li a { padding: 0 10px; font-size: 14px; }
+        }
     </style>
 </head>
 <body>
-    <!-- TOP BAR -->
-<div class="top-bar">
-    📞 Hotline: 0822.314.555  
-    <a href="#dangky">Đăng ký tìm hiểu</a>
-</div>
 
-<nav>
-    <ul>
-        <li><a href="index.html">Trang chủ</a></li>
+    <div class="top-bar">
+        <span>📞 Hotline: 0822.314.555</span>
+        <a href="index.html#dangky">Đăng ký tìm hiểu</a>
+    </div>
 
-        <li>
-            <a onclick="toggleMenu('duhocMenu','arrow1')">Du học 
-                <span id="arrow1" class="arrow">▶</span>
-            </a>
+    <nav>
+        <a href="index.html" class="nav-logo">
+            <img src="https://www.icogroup.vn/vnt_upload/company/Logo_icogroup4x.png" alt="ICOGroup Logo">
+        </a>
 
-            <ul id="duhocMenu" class="submenu">
-                <li>
-                    <a onclick="toggleNested(event,'ducNested','arrowDuc')">
-                        Du học nghề Đức 
-                        <span id="arrowDuc" class="arrow">▶</span>
-                    </a>
-                    <ul id="ducNested" class="nested">
-                        <li><a>Điều dưỡng</a></li>
-                        <li><a>Nhà hàng – KS</a></li>
-                        <li><a>Điện – Cơ khí</a></li>
-                    </ul>
-                </li>
+        <ul>
+            <li><a href="index.html">Trang chủ</a></li>
 
-                <li>
-                    <a onclick="toggleNested(event,'nhatNested','arrowNhat')">
-                        Du học Nhật Bản 
-                        <span id="arrowNhat" class="arrow">▶</span>
-                    </a>
-                    <ul id="nhatNested" class="nested">
-                        <li><a>THPT</a></li>
-                        <li><a>CĐ – Đại học</a></li>
-                        <li><a>Vừa học vừa làm</a></li>
-                    </ul>
-                </li>
+            <li>
+                <a onclick="toggleMenu('duhocMenu','arrow1')">Du học <span id="arrow1" class="arrow">▶</span></a>
+                <ul id="duhocMenu" class="submenu">
+                    <li><a href="duc.html">Du học Đức</a></li>
+                    <li><a href="nhat.html">Du học Nhật</a></li>
+                    <li><a href="han.html">Du học Hàn Quốc</a></li>
+                </ul>
+            </li>
 
-                <li>
-                    <a onclick="toggleNested(event,'hanNested','arrowHan')">
-                        Du học Hàn Quốc 
-                        <span id="arrowHan" class="arrow">▶</span>
-                    </a>
-                    <ul id="hanNested" class="nested">
-                        <li><a>Trường tiếng</a></li>
-                        <li><a>Đại học</a></li>
-                        <li><a>Cao học</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </li>
+            <li>
+                <a onclick="toggleMenu('xkldNested','arrowXKLD')">Xuất khẩu lao động <span id="arrowXKLD" class="arrow">▶</span></a>
+                <ul id="xkldNested" class="submenu">
+                    <li><a href="#">Nhật Bản</a></li>
+                    <li><a href="#">Hàn Quốc</a></li>
+                    <li><a href="#">Đài Loan</a></li>
+                    <li><a href="#">Châu Âu</a></li>
+                </ul>
+            </li>
 
-        <li>
-            <a onclick="toggleNested(event,'xkldNested','arrowXKLD')">
-                Xuất khẩu lao động 
-                <span id="arrowXKLD" class="arrow">▶</span>
-            </a>
-            <ul id="xkldNested" class="nested">
-                <li><a>Nhật Bản</a></li>
-                <li><a>Hàn Quốc</a></li>
-                <li><a>Đài Loan</a></li>
-                <li><a>Châu Âu</a></li>
-            </ul>
-        </li>
+            <li><a href="hoatdong.html">Hoạt động</a></li>
+            <li><a href="lienhe.html" style="color:#ffcc00; font-weight:bold;">Liên hệ</a></li>
+            <li><a href="index.html#dangky" style="font-weight:bold; background:rgba(255,255,255,0.2); border-radius:4px;">Đăng ký</a></li>
+        </ul>
+    </nav>
 
-        <li><a href="hoatdong.html">Hoạt động</a></li>
-        <li><a href="lienhe.html">Liên hệ</a></li>
-        <li><a href="#dangky" style="color:#ff6600; font-weight:bold;">Đăng ký</a></li>
-
-    </ul>
-</nav>
-    <h1 class="contact-header">📞 LIÊN HỆ – ICO GROUP</h1>
-
-    <div class="contact-info">
-        <p><strong>CÔNG TY CỔ PHẦN NHÂN LỰC QUỐC TẾ ICO</strong></p>
-        <p>Văn phòng tư vấn: Số 360, đường Phan Đình Phùng, phường Phan Đình Phùng, tỉnh Thái Nguyên.</p>
-        <p>☎️ Hotline: 0822.314.555</p>
-        <p>Email: <a href="mailto:contact@icogroup.vn">contact@icogroup.vn</a></p>
-        <p>Fanpage: <a href="https://www.facebook.com/">ICO Group Facebook</a></p>
-
-        <div class="social-icons">
-            <a href="#"><img src="https://images.seeklogo.com/logo-png/29/1/facebook-icon-logo-png_seeklogo-290339.png" alt="Facebook"></a>
-            <a href="#"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSh5HJHkuziN0PF-CEjdKhElcEAL27me6W3kw&s" alt="Zalo"></a>
-            <a href="#"><img src="https://png.pngtree.com/png-vector/20190319/ourmid/pngtree-vector-web-icon-png-image_847779.jpg" alt="Website"></a>
+    <div class="page-banner" style="background-image: url('https://icogroup.vn/vnt_upload/weblink/banner_chu_03.jpg'); height: 350px;">
+        <div class="banner-overlay">
+            <div class="banner-content">
+                <h1>LIÊN HỆ VỚI CHÚNG TÔI</h1>
+                <p>Giải đáp mọi thắc mắc về Du học & Xuất khẩu lao động</p>
+            </div>
         </div>
     </div>
 
-    <a class="back-home" href="index.html">⬅ Quay lại Trang Chủ</a>
-    <!-- THÔNG TIN -->
-<section style="background:#002b6f; color:white; padding:40px 20px; margin-top:40px;">
-    <div style="
-        max-width:1100px;
-        margin:auto;
-        display:flex;
-        gap:30px;
-        align-items:center;
-        flex-wrap:wrap;
-    ">
+    <div class="contact-wrapper">
+        
+        <div class="contact-left">
+            <h2 style="color: #0f75bd; margin-bottom: 25px; border-bottom: 2px solid #eee; padding-bottom:10px;">Thông tin liên hệ</h2>
+            
+            <div class="contact-info-item">
+                <span class="material-symbols-outlined contact-icon">location_on</span>
+                <div>
+                    <strong>Địa chỉ:</strong><br>
+                    Số 360, đường Phan Đình Phùng, TP Thái Nguyên
+                </div>
+            </div>
 
-        <!-- BÊN TRÁI: THÔNG TIN -->
-        <div style="flex:1; min-width:260px;">
-            <h2 style="margin-top:0;">CÔNG TY CỔ PHẦN NHÂN LỰC QUỐC TẾ ICO</h2>
+            <div class="contact-info-item">
+                <span class="material-symbols-outlined contact-icon">call</span>
+                <div>
+                    <strong>Hotline:</strong><br>
+                    <a href="tel:0822314555" style="text-decoration:none; color:#333; font-weight:bold;">0822.314.555</a>
+                </div>
+            </div>
 
-            <p>
-                <strong>📌 Địa chỉ:</strong><br>
-                Số 360, đường Phan Đình Phùng,<br>
-                Tỉnh Thái Nguyên
-            </p>
+            <div class="contact-info-item">
+                <span class="material-symbols-outlined contact-icon">mail</span>
+                <div>
+                    <strong>Email:</strong><br>
+                    <a href="mailto:contact@icogroup.vn" style="text-decoration:none; color:#333;">contact@icogroup.vn</a>
+                </div>
+            </div>
 
-            <p><strong>📞 Hotline:</strong> 0822.314.555</p>
+            <div class="contact-info-item">
+                <span class="material-symbols-outlined contact-icon">schedule</span>
+                <div>
+                    <strong>Giờ làm việc:</strong><br>
+                    Thứ 2 - Thứ 6 (7:30 - 17:30)
+                </div>
+            </div>
 
-            <p>
-                <strong>🌐 Liên hệ:</strong><br>
-                Facebook | Zalo | Website
-            </p>
+            <h3 style="margin-top: 30px;">Kết nối với chúng tôi</h3>
+            <div class="social-links">
+                <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook"></a>
+                <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" alt="Zalo"></a>
+                <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram"></a>
+            </div>
         </div>
 
-        <!-- BÊN PHẢI: MAP CLICK -->
-        <div style="flex:1; min-width:300px;">
-            <a 
-                href="https://www.google.com/maps?q=21.583564667410258,105.83856648859603"
-                target="_blank"
-                style="display:block;"
-            >
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d907.4559325278975!2d105.83856648859603!3d21.583564667410258!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313527922dc8a8f1%3A0x1993dff35aafb279!2zVsSDbiBwaMOybmcgVGjEg25nIExvbmc!5e1!3m2!1sen!2s!4v1765696668145!5m2!1sen!2s"
-                    width="100%"
-                    height="550"
-                    style="border:0; border-radius:10px; pointer-events:none;"
-                    loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
-            </a>
+        <div class="contact-right">
+            <h2 style="color: #ff6600; margin-bottom: 25px; text-align:center;">Gửi tin nhắn hỗ trợ</h2>
+            
+            <form class="contact-form" id="contactForm">
+                <input type="text" id="lh_hoten" placeholder="Họ và tên của bạn" required>
+                <input type="text" id="lh_sdt" placeholder="Số điện thoại liên hệ" required pattern="[0-9]{9,11}">
+                <input type="email" id="lh_email" placeholder="Email (không bắt buộc)">
+                <textarea id="lh_noidung" rows="5" placeholder="Nội dung cần tư vấn..." required></textarea>
+                
+                <button type="submit">GỬI NGAY</button>
+                <p id="formMessage"></p>
+            </form>
+
         </div>
 
     </div>
-</section>
+
+    <div style="max-width: 1200px; margin: 0 auto 40px; padding: 0 20px;">
+        <h2 style="text-align: center; color: #0f75bd; margin-bottom: 20px;">Bản đồ chỉ đường</h2>
+        <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3710.4283993466185!2d105.83366937599666!3d21.56911676911571!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31352738b1bf0a11%3A0x8054070086377316!2zMzYwIFBoYW4gxJDDrG5oIFBow7luZywgVFAuIFRow6FpIE5ndXnDqm4!5e0!3m2!1svi!2s!4v1700000000000!5m2!1svi!2s" 
+            width="100%" height="450" style="border:0; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);" 
+            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+    </div>
+
+    <section style="background:#002b6f; color:white; padding:40px 20px; margin-top:50px;">
+        <div style="max-width:1100px; margin:auto; display:flex; gap:30px; align-items:center; flex-wrap:wrap;">
+            <div style="flex:1; min-width:260px;">
+                <h2 style="margin-top:0;">CÔNG TY CỔ PHẦN NHÂN LỰC QUỐC TẾ ICO</h2>
+                <p><strong>📌 Địa chỉ:</strong> Số 360, đường Phan Đình Phùng, Tỉnh Thái Nguyên</p>
+                <p><strong>📞 Hotline:</strong> 0822.314.555</p>
+                <p><strong>🌐 Liên hệ:</strong> Facebook | Zalo | Website</p>
+            </div>
+            <div style="flex:1; min-width:300px; text-align: center;">
+                <img src="https://www.icogroup.vn/vnt_upload/company/Logo_icogroup4x.png" style="background:white; padding:10px; border-radius:5px; height:60px; margin-bottom:10px;">
+                <p>© 2025 ICOGroup. All rights reserved.</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Xử lý Menu
+        function toggleMenu(id, arrowId){
+            document.querySelectorAll(".submenu").forEach(m => {
+                if(m.id !== id) m.style.display = "none";
+            });
+            document.querySelectorAll(".arrow").forEach(a => {
+                if(a.id !== arrowId) a.textContent = "▶";
+            });
+
+            let menu = document.getElementById(id);
+            let arrow = document.getElementById(arrowId);
+            if (menu.style.display === "block") {
+                menu.style.display = "none";
+                arrow.textContent = "▶";
+            } else {
+                menu.style.display = "block";
+                arrow.textContent = "▼";
+            }
+        }
+        
+        window.onclick = function(event) {
+            if (!event.target.closest('li')) {
+                document.querySelectorAll(".submenu").forEach(m => m.style.display = "none");
+                document.querySelectorAll(".arrow").forEach(a => a.textContent = "▶");
+            }
+        }
+
+        // ============================================
+        // PHẦN XỬ LÝ FORM LIÊN HỆ (Đã sửa URL API)
+        // ============================================
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const msgBox = document.getElementById('formMessage');
+            msgBox.textContent = "Đang gửi tin nhắn...";
+            msgBox.style.color = "#0f75bd";
+
+            const data = {
+                ho_ten: document.getElementById('lh_hoten').value,
+                sdt: document.getElementById('lh_sdt').value,
+                email: document.getElementById('lh_email').value,
+                noi_dung: document.getElementById('lh_noidung').value
+            };
+
+            // Sử dụng đường dẫn tương đối để chạy tốt trên Host
+            // Giả sử bạn tạo thêm 1 file contact.php trong thư mục backend_api
+            fetch('backend_api/contact.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(res => res.json())
+            .then(result => {
+                if(result.status) {
+                    msgBox.textContent = "✅ Gửi tin nhắn thành công! Cảm ơn bạn.";
+                    msgBox.style.color = "green";
+                    e.target.reset();
+                } else {
+                    msgBox.textContent = "❌ Có lỗi xảy ra: " + result.message;
+                    msgBox.style.color = "red";
+                }
+            })
+            .catch(err => {
+                msgBox.textContent = "❌ Lỗi kết nối server.";
+                msgBox.style.color = "red";
+                console.error(err);
+            });
+        });
+    </script>
 
 </body>
 </html>
