@@ -32,19 +32,19 @@
         .nav-logo { display: flex; align-items: center; background: white; padding: 5px 15px; border-radius: 5px; height: 44px; text-decoration: none; }
         .nav-logo img { height: 100%; width: auto; object-fit: contain; }
 
-        nav ul { list-style: none; display: flex; gap: 20px; }
+        nav ul { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; }
         nav ul li { position: relative; }
         nav ul li a { color: rgb(255, 255, 255); padding: 0 15px; line-height: 60px; display: block; text-decoration: none; font-weight: 500; cursor: pointer; font-size: 15px; }
         nav ul li a:hover { background: rgba(255,255,255,0.1); }
 
         /* === SUBMENU === */
-        .submenu {
+        .submenu, .nested {
             display: none; position: absolute; background: white; top: 60px; left: 0; min-width: 200px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2); border-radius: 0 0 5px 5px; padding: 10px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2); border-radius: 0 0 5px 5px; padding: 0; list-style: none;
         }
-        .submenu li { margin: 0; }
-        .submenu a { color: #333 !important; line-height: 1.5; padding: 10px 20px; border-bottom: 1px solid #eee; }
-        .submenu a:hover { background: #f4f7fb; color: #0f75bd !important; }
+        .submenu li, .nested li { margin: 0; width: 100%; }
+        .submenu a, .nested a { color: #333 !important; line-height: 1.5; padding: 10px 20px; border-bottom: 1px solid #eee; display: block; }
+        .submenu a:hover, .nested a:hover { background: #f4f7fb; color: #0f75bd !important; }
         .arrow { font-size: 10px; margin-left: 5px; }
 
         /* === HERO BANNER & SLIDER === */
@@ -70,6 +70,10 @@
         .form-container h3 { text-align: center; color: #ff6600; margin-bottom: 20px; font-size: 24px; }
         label { display: block; font-weight: 600; margin-bottom: 5px; margin-top: 15px; color: #333; }
         input, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px; }
+        
+        /* [QUAN TRỌNG] CSS để tự động viết hoa chữ cái đầu (nhìn thấy) mà không cần JS */
+        #ho_ten { text-transform: capitalize; }
+
         button[type="submit"] { width: 100%; margin-top: 25px; padding: 12px; background: #ff6600; color: white; border: none; border-radius: 5px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; }
         button[type="submit"]:hover { background: #e65c00; }
         #message { text-align: center; margin-top: 15px; font-weight: bold; }
@@ -110,7 +114,7 @@
         </li>
 
         <li>
-            <a onclick="toggleMenu('xkldNested','arrowXKLD')">Xuất khẩu lao động <span id="arrowXKLD" class="arrow">▶</span></a>
+            <a onclick="toggleNested(event,'xkldNested','arrowXKLD')">Xuất khẩu lao động <span id="arrowXKLD" class="arrow">▶</span></a>
             <ul id="xkldNested" class="submenu">
                 <li><a href="xkldjp.html">Nhật Bản</a></li>
                 <li><a href="xkldhan.html">Hàn Quốc</a></li>
@@ -162,10 +166,13 @@
     <form id="userRegistrationForm">
         <label>Họ và Tên:</label>
         <input type="text" id="ho_ten" required placeholder="Nhập họ tên của bạn...">
+        
         <label>Năm Sinh:</label>
         <input type="text" id="nam_sinh" required maxlength="4" placeholder="Ví dụ: 2005">
+        
         <label>Địa Chỉ:</label>
         <input type="text" id="dia_chi" required placeholder="Tỉnh/Thành phố...">
+        
         <label>Chương Trình Quan Tâm:</label>
         <select id="chuong_trinh" required>
             <option>Du học Nhật Bản</option>
@@ -173,20 +180,24 @@
             <option>Xuất khẩu lao động</option>
             <option>Đào tạo ngoại ngữ</option>
         </select>
+        
         <label>Quốc Gia Muốn Đến:</label>
-        <select id="quoc_gia" onchange="toggleQuocGiaKhac()">
+        <select id="quoc_gia">
             <option value="Nhật Bản">Nhật Bản</option>
             <option value="Hàn Quốc">Hàn Quốc</option>
             <option value="Đài Loan">Đài Loan</option>
             <option value="Đức">Đức</option>
             <option value="Khác">Khác</option>
         </select>
+        
         <div id="quoc_gia_khac_box" style="display:none;">
             <label>Nhập quốc gia khác:</label>
             <input type="text" id="quoc_gia_khac">
         </div>
+        
         <label>Số Điện Thoại:</label>
         <input type="tel" id="sdt" required maxlength="11" pattern="[0-9]{9,11}" placeholder="Nhập số điện thoại...">
+        
         <button type="submit">GỬI THÔNG TIN</button>
         <p id="message"></p>
     </form>
@@ -210,6 +221,181 @@
         </div>
     </div>
 </section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    /* ========================== */
+    /* 1. XỬ LÝ SLIDER (BANNER)   */
+    /* ========================== */
+    const slider = document.querySelector(".slider");
+    const images = document.querySelectorAll(".slider img");
+    const nextBtn = document.querySelector(".next");
+    const prevBtn = document.querySelector(".prev");
+
+    if (slider && images.length > 0) {
+        let index = 0;
+        let slideInterval; 
+
+        const updateSlider = () => {
+            slider.style.transform = `translateX(-${index * 100}%)`;
+        };
+
+        const startSlideTimer = () => {
+            if (slideInterval) clearInterval(slideInterval);
+            slideInterval = setInterval(() => {
+                index++;
+                if (index >= images.length) index = 0;
+                updateSlider();
+            }, 4000);
+        };
+
+        if (nextBtn) {
+            nextBtn.onclick = () => {
+                index++;
+                if (index >= images.length) index = 0;
+                updateSlider();
+                startSlideTimer(); 
+            };
+        }
+
+        if (prevBtn) {
+            prevBtn.onclick = () => {
+                index--;
+                if (index < 0) index = images.length - 1;
+                updateSlider();
+                startSlideTimer(); 
+            };
+        }
+        startSlideTimer();
+    }
+
+    /* ========================== */
+    /* 2. XỬ LÝ MENU DROPDOWN     */
+    /* ========================== */
+    window.toggleMenu = function(id, arrowId) {
+        document.querySelectorAll(".submenu").forEach(m => {
+            if(m.id !== id) m.style.display = "none";
+        });
+        document.querySelectorAll(".arrow").forEach(a => {
+            if(a.id !== arrowId) a.textContent = "▶";
+        });
+        
+        let menu = document.getElementById(id);
+        let arrow = document.getElementById(arrowId);
+        
+        if (menu.style.display === "block") {
+            menu.style.display = "none";
+            arrow.textContent = "▶";
+        } else {
+            menu.style.display = "block";
+            arrow.textContent = "▼";
+        }
+    };
+
+    window.toggleNested = function(event, nestedId, arrowId) {
+        toggleMenu(nestedId, arrowId);
+    };
+
+    window.onclick = function(event) {
+        if (!event.target.closest('li')) {
+            document.querySelectorAll(".submenu").forEach(m => m.style.display = "none");
+            document.querySelectorAll(".arrow").forEach(a => a.textContent = "▶");
+        }
+    };
+
+    /* ========================== */
+    /* 3. HIỆN Ô NHẬP QUỐC GIA    */
+    /* ========================== */
+    const quocGiaSelect = document.getElementById("quoc_gia");
+    const quocGiaKhacBox = document.getElementById("quoc_gia_khac_box");
+
+    if (quocGiaSelect && quocGiaKhacBox) {
+        quocGiaSelect.addEventListener("change", function () {
+            quocGiaKhacBox.style.display = (this.value === "Khác") ? "block" : "none";
+        });
+    }
+
+    /* ========================== */
+    /* 4. VALIDATE DỮ LIỆU        */
+    /* ========================== */
+    // [QUAN TRỌNG] ĐÃ XÓA PHẦN CAN THIỆP "input" TRÊN Ô HỌ TÊN ĐỂ GÕ ĐƯỢC TIẾNG VIỆT
+    // Năm Sinh & SĐT (Chỉ nhập số)
+    const onlyNumberInputs = [document.getElementById("nam_sinh"), document.getElementById("sdt")];
+    onlyNumberInputs.forEach(input => {
+        if(input) {
+            input.addEventListener("input", function () {
+                this.value = this.value.replace(/[^0-9]/g, "");
+            });
+        }
+    });
+
+    /* ========================== */
+    /* 5. GỬI FORM (AJAX)         */
+    /* ========================== */
+    const form = document.getElementById('userRegistrationForm');
+    if (form) {
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const messageDisplay = document.getElementById('message');
+            messageDisplay.textContent = '⏳ Đang gửi thông tin...';
+            messageDisplay.style.color = '#0f75bd';
+
+            // Xử lý Logic Quốc Gia
+            let selectedQuocGia = document.getElementById('quoc_gia').value;
+            const quocGiaKhacInput = document.getElementById('quoc_gia_khac');
+            
+            if (selectedQuocGia === "Khác") {
+                const customVal = quocGiaKhacInput ? quocGiaKhacInput.value.trim() : "";
+                if(customVal !== "") {
+                    selectedQuocGia = customVal;
+                } else {
+                    messageDisplay.textContent = '❌ Vui lòng nhập tên quốc gia mong muốn.';
+                    messageDisplay.style.color = 'red';
+                    if(quocGiaKhacInput) quocGiaKhacInput.focus();
+                    return; 
+                }
+            }
+
+            const data = {
+                ho_ten: document.getElementById('ho_ten').value.trim(),
+                nam_sinh: document.getElementById('nam_sinh').value.trim(),
+                dia_chi: document.getElementById('dia_chi').value.trim(),
+                chuong_trinh: document.getElementById('chuong_trinh').value,
+                quoc_gia: selectedQuocGia, 
+                sdt: document.getElementById('sdt').value.trim()
+            };
+
+            // URL TUYỆT ĐỐI ĐỂ TRÁNH LỖI 404
+            fetch('http://localhost/web8s/backend_api/insert.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(res => res.json())
+            .then(result => {
+                if (result.status) {
+                    messageDisplay.textContent = '✅ Đăng ký thành công! Chúng tôi sẽ liên hệ sớm.';
+                    messageDisplay.style.color = 'green';
+                    form.reset();
+                    if (quocGiaKhacBox) quocGiaKhacBox.style.display = 'none';
+                } else {
+                    messageDisplay.textContent = '❌ Lỗi từ server: ' + result.message;
+                    messageDisplay.style.color = 'red';
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                messageDisplay.textContent = '❌ Không thể kết nối đến máy chủ. Hãy bật XAMPP!';
+                messageDisplay.style.color = 'red';
+            });
+        });
+    }
+});
+</script>
+
+</body>
+</html>
 
 <script>
     /* Menu JS */
